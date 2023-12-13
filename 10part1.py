@@ -67,20 +67,17 @@ def find_next(last_two, grid):
         if result != False:
             return result
 
-def generate_loop(path_so_far,grid):
+def generate_loop(grid):
 
-    if path_so_far == []:
-        return generate_loop([find_S(grid)],grid)
+    path_so_far = [ find_S(grid)]
 
-    last_pos = path_so_far[-1]
+    next_pos = find_next(path_so_far,grid)
 
-    next_pos = find_next(path_so_far[-2:],grid)
-
-    if next_pos == path_so_far[0]:
-        return path_so_far
-    else:
+    while next_pos != path_so_far[0]:
         path_so_far.append(next_pos)
-        return generate_loop(path_so_far,grid)
+        next_pos = find_next(path_so_far[-2:],grid)
+    
+    return path_so_far
 
 if __name__ == "__main__":
     with open('10input.txt', 'r') as f:
@@ -100,7 +97,9 @@ if __name__ == "__main__":
 # LJ.LJ"""
 
     grid = parse(input_data)
-    loop = generate_loop([],grid)
+    loop = generate_loop(grid)
+    # for pos in loop:
+    #     print(pos)
     max_distance = int(len(loop)/2)
     print(max_distance)
 
